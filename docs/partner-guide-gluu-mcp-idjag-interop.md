@@ -175,7 +175,7 @@ The Gluu servers are public test systems that use fictional demo users, so keep 
 
 **Gluu contact:** Mike Schwartz, CEO and Founder, Gluu Inc. (mike@gluu.org).
 
-This testing supports the OpenID Foundation AIIM Community Group's MCP security interoperability event, whose results are presented at the Gartner IAM Summit on December 7-9, 2026. The event runs weekly coordination calls (Mondays, 11 AM Pacific, until November 30), and your results with Gluu can count toward it.
+This testing supports the OpenID Foundation AIIM Community Group's MCP security interoperability event, whose results are presented at the Gartner IAM Summit on December 7-9, 2026. 
 
 **To get started**
 
