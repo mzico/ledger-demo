@@ -173,7 +173,7 @@ The Gluu servers are public test systems that use fictional demo users, so keep 
 
 ## Contact and next steps
 
-**Gluu contact:** Mike Schwartz, CEO and Founder, Gluu Inc. (mike@gluu.org).
+**Gluu contact:** Mohib Zico, Director of Support, Gluu Inc. (mohib@gluu.org).
 
 This testing supports the OpenID Foundation AIIM Community Group's MCP security interoperability event, whose results are presented at the Gartner IAM Summit on December 7-9, 2026. 
 
