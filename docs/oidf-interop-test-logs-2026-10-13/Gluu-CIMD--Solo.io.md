@@ -4,7 +4,7 @@ File name: `Gluu-CIMD--Solo.io`
 Tester: Gluu (Mohibuzzaman Zico, zico@gluu.org). All times UTC. Both Gluu servers ran with DEBUG logging for the test.
 
 ## When Performed
-Started: 2026-10-13 16:06:15 UTC (authorization request); 16:06:29 UTC (token request)
+Started: 2026-10-13 16:06:15 UTC
 Ended: 2026-10-13 16:06:29 UTC
 Where performed: online
 
