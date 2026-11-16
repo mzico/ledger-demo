@@ -50,7 +50,7 @@ Headers the MCP server sets on every sidecar call; without the first two, the si
 
 ## Policy store
 
-One store, `ledgerline_research_mcp`, written in Agama Lab and kept in [mzico/ledgerline-policies](https://github.com/mzico/ledgerline-policies) (branch `agama-lab-policy-designer`). v0.1.1 is released and served by `ledger-demo`'s Lock; [PR #1](https://github.com/mzico/ledgerline-policies/pull/1) prepares v0.1.2. Cedarling runs in token mode (`authorize_multi_issuer`): identity comes only from the `ledger-demo` access token, so no rule constrains `principal` in its head.
+One store, `ledgerline_research_mcp`, written in Agama Lab and kept in [mzico/ledgerline-policies](https://github.com/mzico/ledgerline-policies) (branch `agama-lab-policy-designer`). v0.1.2, with the fixes from [PR #1](https://github.com/mzico/ledgerline-policies/pull/1), is released and served by `ledger-demo`'s Lock. Cedarling runs in token mode (`authorize_multi_issuer`): identity comes only from the `ledger-demo` access token, so no rule constrains `principal` in its head.
 
 Trusted issuer: named `Jans`, endpoint `https://ledger-demo.gluu.info/.well-known/openid-configuration`, access token mapped to `Jans::Access_token`. Its claims reach the rules as `context.tokens.jans_access_token`. A first release with the issuer named `Ledgerline` (v0.1.0) did not load in Cedarling 2.6.10.
 
@@ -81,7 +81,7 @@ How it is set up:
 
 How someone checks it: open Agama Lab's Evidence panel in "Another Lock" mode against `ledger-demo` with a `trace.readonly` token, load the record by trace id, and verify it on [cedarling.dev/playground/proof](https://cedarling.dev/playground/proof). A valid signature proves which key signed the record and that it was not changed; it does not prove the tool did what the decision allowed.
 
-Agama Lab's "Download proof bundle" button only works for sandbox evidence today, because it needs the producer's public key, which only the sandbox keeps. For `ledger-demo`, the bundle is assembled from Lock's record, the key listed by Lock's `GET /audit/trace/admin/producer-keys` and the released `.cjar` (see Work items).
+Agama Lab's "Download proof bundle" button only works for sandbox evidence today, because it needs the producer's public key, which only the sandbox keeps. For `ledger-demo`, the bundle is assembled from Lock's record, the key listed by Lock's `GET /audit/trace/admin/producer-keys` and the released `.cjar` by tools/make\_proof\_bundle.py in mzico/ledgerline-policies.
 
 ## Agama Lab
 
@@ -95,17 +95,21 @@ Agama Lab is where Ledgerline's rules are written, signed and rehearsed; it is n
 
 ## Work items
 
-Status on Nov 16, 2026: the main path works on `ledger-demo`. With a real token and the real Flask sidecar, Search is allowed, Share is denied, Read with `prompt_injection` is denied, and Lock stored the signed records with valid signatures.
+Status on Nov 16, 2026: the main path works on `ledger-demo`. With a real token and the real Flask sidecar, Search is allowed, Share is denied, Read with `prompt_injection` is denied, and Lock stored the signed records with valid signatures. Store v0.1.2 is live, and a signed Search decision made under it verifies on cedarling.dev.
 
 | # | Item | Status |
 | --- | --- | --- |
 | 1 | Token claims | Done: `scp` array added; `scope` stays a string |
 | 2 | Lock setup | Done: sidecar client, `ledgerline` evidence domain, `FIRST_OBSERVED` chain mode, signing key registered |
-| 3, 4 | Store released and served | Done: v0.1.1, hash matches the release; v0.1.2 in [PR #1](https://github.com/mzico/ledgerline-policies/pull/1) |
+| 3, 4 | Store released and served | Done: v0.1.2 released ([PR #1](https://github.com/mzico/ledgerline-policies/pull/1) merged) and served; hash matches the release |
 | 5 | Sidecar against Lock | Done with a pasted Lock token |
 | 6 | MCP server pre-tool check | Open: send `Jans::Application`, `fraud_indicators` and both audit headers |
 | 7 | Gateway trace id | Asked Nick; not blocking, the MCP server falls back to `exec-<uuid>` |
 | 8 | Full ID-JAG flow on the rebuilt server | Open |
+| 9 | Proof bundle for ledger-demo | Done: tools/make\_proof\_bundle.py (ledgerline-policies PR #2, merged); the v0.1.2 bundle's signature and .cjar hash verify |
+| 12 | Re-test and release v0.1.2 | Done: aud and scp map on 2.6.10; Search allowed under v0.1.2 |
+| 13 | Sandbox login | Intermittent: passed on retry; reopen with jans-auth logs if it recurs |
+| 15 | cedarling.dev sample, proof and tutorial | Draft in GluuFederation/websites#83 with the v0.1.2 proof; waits on 8 and the real tool names |
 
 | # | Work item | Owner | Depends on |
 | --- | --- | --- | --- |
@@ -123,6 +127,7 @@ Status on Nov 16, 2026: the main path works on `ledger-demo`. With a real token 
 | 12 | Re-run the sidecar test with PR #1, then release v0.1.2 (or only its first commit if aud/scp do not map to attributes on 2.6.10) | Zico | none |
 | 13 | Fix the sandbox test-user login (invalid\_authentication\_method, correlation id 8c2b1319-a74f-49f7-816b-7ffb7f49b9df) so the store can be rehearsed | Gluu | jans-auth log for that id |
 | 14 | Replace the pasted Lock token with one that renews: client credentials from the sidecar's client, or registration if Cedarling 2.6.10 supports it | Gluu | none |
+| 15 | Publish the Ledgerline Playground sample, recorded proof and tutorial on cedarling.dev; confirm the recorded call went through agentgateway, and swap in the real tool names | Gluu | 8, 9, Solo's tool names |
 
 ## Risks and decisions
 
